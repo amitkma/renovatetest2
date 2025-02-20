@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "pip-compile": {
+    "fileMatch": ["(^|/)requirements/(.*)\\.txt$"],
+    "lockFileMaintenance": {
+      "enabled": true,
+      "branchTopic": "pip-compile-refresh",
+      "commitMessageAction": "Refresh pip-compile outputs"
+    }
+  },
+  "commitMessagePrefix": ":arrow_up:",
+  "labels": ["type: Dependencies", "patch"],
+  "pip_requirements": {
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "description": "One week stability period for Python packages",
+      "matchDatasources": ["pypi"],
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchFileNames": ["requirements/development.in"],
+      "addLabels": ["dev"]
+    },
+    {
+      "matchFileNames": ["requirements/production.in"],
+      "addLabels": ["prod"]
+    },
+    {
+      "matchFileNames": ["requirements/base.in"],
+      "addLabels": ["base"]
+    },
+    {
+      "groupName": "mypy and django-stubs",
+      "matchPackageNames": ["mypy", "django-stubs", "django-stubs-ext"]
+    },
+    {
+      "groupName": "Ruff",
+      "matchPackageNames": ["ruff", "astral-sh/ruff-pre-commit"],
+      "minimumReleaseAge": "7 days"
+    }
+  ],
+  "pre-commit": {
+    "enabled": true
+  }
+}
